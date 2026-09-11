@@ -1,14 +1,28 @@
 package presentacion;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.*;
 import java.nio.file.*;
 import com.sun.net.httpserver.*;
 import api.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-public class SoundAppWeb {
+@WebServlet("/web")
+public class SoundAppWeb extends HttpServlet {
 
-	public static void main(String[] args)throws Exception{
-
+    private static final long serialVersionUID = 1L;
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    	throws ServletException, IOException {
+    	//Codificación a usar y en vision de HTML
+    	response.setCharacterEncoding("UTF-8");
+    	response.setContentType("text/html");
+ 
 		HttpServer s=HttpServer.create(new InetSocketAddress(8080),0);
 
 		s.createContext("/api/equipos",new EquiposHandler());
