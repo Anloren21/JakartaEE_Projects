@@ -1,4 +1,4 @@
-package presentacion;
+package presentacion.controladores;
 
 import java.io.*;
 
@@ -12,55 +12,33 @@ import jakarta.servlet.http.*;
 
 import accesodatos.*;
 
-@WebServlet("/usuario")
-public class FormularioUsuarioServlet extends HttpServlet {
+@WebServlet("/mvc/usuario")
+public class UsuarioControladorServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     	throws ServletException, IOException {
-    	
-    	//Codificación a usar y en vision de HTML
-    	response.setCharacterEncoding("UTF-8");
-    	response.setContentType("text/html");
-    	
-    	PrintWriter out = response.getWriter();
-    	
     	Usuario usuario = new Usuario(0L, "", "", "", 0L, "");
-    	
+
+    	//1. Recibir la información de la petición
     	String strId = request.getParameter("id");
     	
     	if (strId != null) {
+    		//2. Convertir los datos necesarios
     		Long id = Long.parseLong(strId);
     		
+    		//4. Procesar datos
     		usuario = UsuariosCrud.obtenerPorId(id);
+
+    		//5. Saltar a la siguiente pantalla/vista
+    		request.setAttribute("usuario", usuario);
     	}
     	
-    	out.printf("""
-    			<!DOCTYPE html>
-				<html>
-					<head>
-						<title>Mantenimiento de usuarios</title>
-					</head>
-					<body>
-					
-						<h1> Mantenimiento de Usuarios</h1>
-						
-						<form action="usuario" method="post">
-							<input name="id" placeholder="Id" value="%s">
-							<input name="nombre" placeholder="Nombre" value="%s">
-							<input name="email" placeholder="Email" value="%s">
-							<input type="password" name="password" placeholder="Contraseña">
-							
-							<button>Guardar</button>
-						</form>
-					</body>
-				</html>
-						""", usuario.id(),
-		    				usuario.nombre(),
-		    				usuario.email()
-		    				 );
-		
+    	//3. Crear objeto
+    	
+    	//6. Saltar a la siguiente vista
+    	request.getRequestDispatcher("/WEB-INF/vistas/usuario.jsp").forward(request, response);
 	}
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -84,7 +62,7 @@ public class FormularioUsuarioServlet extends HttpServlet {
     		UsuariosCrud.modificar(usuario);
     	}
     	
-    	//5. Saltar a la siguiente pantalla
+    	//6. Saltar a la siguiente vista
     	response.sendRedirect("usuarios");
     }
 }

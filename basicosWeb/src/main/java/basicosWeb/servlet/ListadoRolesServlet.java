@@ -1,14 +1,19 @@
 package basicosWeb.servlet;
 
 import java.io.*;
+
+import accesodatos.RolCrud;
+import dto.Rol;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import jakarta.servlet.http.*;
 
+import accesodatos.*;
 
-@WebServlet("/saluda")
+
+@WebServlet("/roles")
 public class ListadoRolesServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -22,7 +27,11 @@ public class ListadoRolesServlet extends HttpServlet {
     	PrintWriter out = response.getWriter();
     	
     	
-    	String nombre = request.getParameter("nombre");
+    	String rolTexto = "";
+    	
+    	for(Rol rol: RolCrud.obtenerTodos()) {
+    		rolTexto += "<li>" + rol.nombre() + "</li>";
+    	}
     	
     	out.append(String.format("""
     			<!DOCTYPE html>
@@ -31,10 +40,12 @@ public class ListadoRolesServlet extends HttpServlet {
 						<title>Basicos Web</title>
 					</head>
 					<body>
-						<h1>Hola %s, ¿Qué tal estás? </h1>	
+						<ul>
+							%s
+						</ul>	
 					</body>
 				</html>
-						""", nombre));
+						""", rolTexto));
 		
 	}
 }

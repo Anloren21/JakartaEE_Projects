@@ -44,7 +44,7 @@ public class ListadoUsuariosServlet extends HttpServlet {
 								<td>%s</td>
 								<td>%s</td>
 								<td>
-    								<a href="usuario?id=?">Editar</a>
+    								<a href="usuario?id=%s">Editar</a>
     								<a href="usuarios?borrar=%s">Borrar</a>
     							</td>
 							</tr>
@@ -57,7 +57,7 @@ public class ListadoUsuariosServlet extends HttpServlet {
     				usuario.id());
     	}
     	
-    	out.append(String.format("""
+    	out.printf("""
     			<!DOCTYPE html>
 				<html>
 					<head>
@@ -91,7 +91,7 @@ public class ListadoUsuariosServlet extends HttpServlet {
 						</table>	
 					</body>
 				</html>
-						""", usuarioTexto));
+						""", usuarioTexto);
 		
 	}
 }
