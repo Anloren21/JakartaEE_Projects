@@ -7,6 +7,7 @@ import dto.Usuario;
 
 public class UsuariosCrud {
 	
+	private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	public static final String JDBC_URL = "jdbc:mysql://localhost:3306/amazonia";
 	public static final String JDBC_USER = "amazonia_app";
 	public static final String JDBC_PASS = "admin";
@@ -19,10 +20,21 @@ public class UsuariosCrud {
 			JOIN roles r ON u.roles_id = r.id	
 			""";
 	
+	private static final String SQL_SELECT_ID = SQL_SELECT + "WHERE u.id=?";
+	private static final String SQL_SELECT_EMAIL = SQL_SELECT + "WHERE u.email=?";
 	
-	private static final String SQL_SELECT_EMAIL = SQL_SELECT + "WHERE email=?";
 	private static final String SQL_INSERT = "INSERT INTO usuarios (nombre, email, password, roles_id) VALUES (?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE usuarios SET nombre=?, email=?, password=?, roles_id=? WHERE id=?";
+	private static final String SQL_DELETE = "DELETE FROM usuarios WHERE id=?";
 	
+	static {
+		try {
+			Class.forName(JDBC_DRIVER);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("No se ha encontrado el driver " + JDBC_DRIVER, e);
+		}
+	}
+
 	public static ArrayList<Usuario> obtenerTodos() {
 		try {
 			PreparedStatement pst = crearSentencia(SQL_SELECT);
@@ -73,6 +85,25 @@ public class UsuariosCrud {
 		}
 	}
 
+	public static Usuario obtenerPorId(Long id) {
+		try (PreparedStatement pst = crearSentencia(SQL_SELECT_ID)) {
+			pst.setLong(1, id);
+			
+			ResultSet rs = pst.executeQuery();
+			
+			Usuario usuario = null;
+			
+			if (rs.next()) {
+				usuario = new Usuario(rs.getLong("u_id"), rs.getString("u_nombre"), 
+						rs.getString("u_email"), rs.getString("u_password"), rs.getLong("r_id"), rs.getString("r_nombre"));
+			}
+			
+			return usuario;
+		} catch (SQLException e) {
+			throw new RuntimeException("No se ha podido encontrar el usuario ", e);
+		}
+	}
+
 	public static void insertar(Usuario usuario) {
 		try (PreparedStatement pst = crearSentencia(SQL_INSERT)) {
 			pst.setString(1, usuario.nombre());
@@ -83,8 +114,36 @@ public class UsuariosCrud {
 			pst.executeUpdate();
 			
 		} catch (SQLException e) {
-			throw new RuntimeException("No se ha podido encontrar el usuario ", e);
+			throw new RuntimeException("No se ha podido añadir el usuario ", e);
 		}
 	}
+	
+	public static void modificar(Usuario usuario) {
+		try (PreparedStatement pst = crearSentencia(SQL_UPDATE)) {
+			pst.setString(1, usuario.nombre());
+			pst.setString(2, usuario.email());
+			pst.setString(3, usuario.password());
+			pst.setLong(4, usuario.rolId());
+			pst.setLong(5, usuario.id());
+			
+			
+			pst.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("No se ha podido modificar el usuario ", e);
+		}
+	}
+	
+	public static void borrar(Long id) {
+		try (PreparedStatement pst = crearSentencia(SQL_DELETE)) {
+			pst.setLong(1, id);
+			
+			pst.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("No se ha podido borrar el usuario ", e);
+		}
+	}
+
 
 }
