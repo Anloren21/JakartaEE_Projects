@@ -1,7 +1,8 @@
-<%@page import="dto.Usuario"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,23 +23,15 @@
 		</thead>
 
 		<tbody>
+			<c:forEach items="${usuarios}" var="usuario"></c:forEach>
 			<tr>
-				<%
-				@SuppressWarnings("unchecked")
-				ArrayList<Usuario> usuarios = (ArrayList<Usuario>) request.getAttribute("usuarios");
-
-				for (Usuario usuario : usuarios) {
-				%>
-				<th><%=usuario.id()%></th>
-				<td><%=usuario.nombre()%></td>
-				<td><%=usuario.email()%></td>
-				<td><%=usuario.rolNombre()%></td>
-				<td><a href="usuario?id=<%=usuario.id()%>">Editar</a> <a
-					href="usuarios?borrar=<%=usuario.id()%>">Borrar</a></td>
+				<th>${usuario.id()}</th>
+				<td>${usuario.nombre()}></td>
+				<td>${usuario.email()}</td>
+				<td>${usuario.rolNombre()}</td>
+				<td><a href="usuario?id=${usuario.id()}">Editar</a> <a
+					href="usuarios?borrar=${usuario.id()}">Borrar</a></td>
 			</tr>
-			<%
-			}
-			%>
 		</tbody>
 
 		<tfoot>

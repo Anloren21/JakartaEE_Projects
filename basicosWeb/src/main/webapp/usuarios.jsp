@@ -20,8 +20,8 @@
 				<th>Rol</th>
 				<th>OPCIONES</th>
 			</tr>
-		</thead>
-
+		</thead> 
+		
 		<tbody>
 			<tr>
 				<%
