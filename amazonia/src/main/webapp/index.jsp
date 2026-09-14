@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap demo</title>
+<title>Amazonia | Tienda Online</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -27,7 +27,7 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="#">Home</a></li>
+						aria-current="page" href="#">Principal</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Productos</a></li>
 				</ul>
 				<form class="d-flex" role="search">
@@ -39,23 +39,29 @@
 		</div>
 	</nav>
 
-	<div class="row row-cols-1 row-cols-md-3 g-4">
-		<c:forEach begin="1" end="10" var="i">
-			<div class="col">
-				<div class="card h-100">
-					<img src="https://picsum.photos/id/${i}/400/300" class="card-img-top"
-						alt="...">
-					<div class="card-body">
-						<h5 class="card-title">Producto ${i}</h5>
-						<p class="card-text">La mejor herramienta de trabajo.</p>
-					</div>
-					<div class="card-footer">
-						<small class="text-body-secondary">${1*100} €</small>
+	<main class="container my-5">
+<%-- 		<p>${productos}</p> --%>
+
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+			<c:forEach var="p" items="${productos}">
+				<div class="col">
+					<div class="card h-100">
+						<img src="https://picsum.photos/id/${p.id}/400/300"
+							class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5 class="card-title">${p.nombre}</h5>
+							<p class="card-text">${p.descripción}</p>
+						</div>
+						<div class="card-footer">
+							<small class="text-body-secondary">${p.precio} €</small>
+						</div>
 					</div>
 				</div>
-			</div>
-		</c:forEach>
-	</div>
+			</c:forEach>
+		</div>
+
+	</main>
+
 
 	<footer class="p-2 text-bg-dark"> &copy;2026 RjhuLorraine </footer>
 	<script
