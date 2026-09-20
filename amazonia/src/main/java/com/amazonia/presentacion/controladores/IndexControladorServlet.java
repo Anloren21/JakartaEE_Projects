@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import com.amazonia.accesodato.ProductoCrud;
 import com.amazonia.dtos.Producto;
+import com.amazonia.logicanegocio.AnonimoNegocio;
 
 @WebServlet("/index")
 public class IndexControladorServlet extends HttpServlet {
@@ -20,8 +21,8 @@ public class IndexControladorServlet extends HttpServlet {
 		// 1. Recibir la información de la petición
 		// 2. Convertir los datos necesarios
 		// 3. Crear objeto
-		// 4. Procesar datos
-		ArrayList<Producto> productos = ProductoCrud.obtenerTodos();
+		// 4. Procesar datos-Llamar a la lógica de negocio
+		ArrayList<Producto> productos = AnonimoNegocio.listarProductos();
 		
 		System.out.println("Productos: " + productos);
 
