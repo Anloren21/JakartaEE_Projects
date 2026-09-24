@@ -9,4 +9,10 @@ public class AnonimoNegocio {
 	public static ArrayList<Producto> listarProductos() {
 		return ProductoCrud.obtenerTodos();
 	}
+	
+	public static Producto verDetalleProducto(Long id) {
+		System.out.println("Ver detalle producto " + id);
+		
+		return ProductoCrud.obtenerPorId(id);
+	}
 }
