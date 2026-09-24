@@ -19,10 +19,21 @@ public class FormularioControladorServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1. Recibir la información de la petición
+		String sId = request.getParameter("id");
+
 		// 2. Convertir los datos necesarios
-		// 3. Crear objeto
-		// 4. Procesar datos-Llamar a la lógica de negocio
-		// 5. Saltar a la siguiente pantalla/vista
+		if (sId != null) {
+
+			Long id = Long.parseLong(sId);
+
+			// 3. Crear objeto
+
+			// 4. Procesar datos-Llamar a la lógica de negocio
+			Producto producto = AnonimoNegocio.verDetalleProducto(id);
+
+			// 5. Saltar a la siguiente pantalla/vista
+			request.setAttribute("producto", producto);
+		}
 		// 6. Saltar a la siguiente vista
 		request.getRequestDispatcher("/admin/formulario.jsp").forward(request, response);
 	}
