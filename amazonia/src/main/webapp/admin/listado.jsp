@@ -32,7 +32,7 @@
 	<tfoot class="table-secondary">
 		<tr>
 			<td colspan="3"></td>
-			<td><a class="btn btn-sm btn-primary" href="#"><i
+			<td><a class="btn btn-sm btn-primary" href="formulario"><i
 					class="bi bi-plus-lg"></i></a></td>
 		</tr>
 	</tfoot>
