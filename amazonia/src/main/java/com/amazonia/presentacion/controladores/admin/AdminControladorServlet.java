@@ -1,4 +1,4 @@
-package com.amazonia.presentacion.controladores;
+package com.amazonia.presentacion.controladores.admin;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
