@@ -3,9 +3,10 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ include file="/includes/cabecera.jsp"%>
 
+<h2><i class="bi bi-cart"></i></h2>
 
 <table class="table table-hover table-striped table-bordered">
-	<caption>Listado de productos</caption>
+	<caption>Carrito</caption>
 
 	<thead class="table-secondary">
 		<tr>
@@ -19,7 +20,7 @@
 			<tr class="align-middle">
 				<td>${producto.nombre}</td>
 				<td class="text-end">${producto.precio}</td>
-			</tr>
+			</tr> 
 		</c:forEach>
 	</tbody>
 

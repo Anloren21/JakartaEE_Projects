@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Amazonia | Tienda Online</title>
 
-<base href="http://localhost:8080/amazonia/">
+<base href="${pageContext.request.contextPath}/">
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet"
@@ -30,6 +30,9 @@
 					<li class="nav-item"><a class="nav-link active" href="index">Principal</a></li>
 				</ul>
 				<ul class="navbar-nav mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link active" href="carrito"><i
+							class="bi bi-cart"></i>&nbsp;CARRITO</a></li>
+
 					<c:if test="${usuario.rol == 'ADMIN' }">
 						<li class="nav-item"><a class="nav-link active"
 							href="admin/listado">Administración</a></li>
