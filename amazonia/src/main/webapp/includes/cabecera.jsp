@@ -11,7 +11,8 @@
 <base href="http://localhost:8080/amazonia/">
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="css/fonts/bootstrap-icons.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body class="h-100 d-flex flex-column justify-content-between">
 	<nav class="navbar navbar-expand-lg bg-dark sticky-top"
@@ -29,8 +30,24 @@
 					<li class="nav-item"><a class="nav-link active" href="index">Principal</a></li>
 				</ul>
 				<ul class="navbar-nav mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active"
-						href="admin/listado">Administación</a></li>
+					<c:if test="${usuario.rol == 'ADMIN' }">
+						<li class="nav-item"><a class="nav-link active"
+							href="admin/listado">Administración</a></li>
+					</c:if>
+					<c:if test="${usuario != null}">
+						<li class="navbar-text"><i class="bi bi-person-fill"></i>&nbsp;
+							${usuario.nombre}&nbsp;${usuario.rol}</li>
+					</c:if>
+
+					<c:if test="${usuario == null}">
+						<li class="nav-item"><a class="nav-link" href="login"><i
+								class="bi bi-box-arrow-in-right"></i></a></li>
+					</c:if>
+
+					<c:if test="${usuario != null}">
+						<li class="nav-item"><a class="nav-link" href="logout"><i
+								class="bi bi-box-arrow-left"></i></a></li>
+					</c:if>
 				</ul>
 			</div>
 		</div>
