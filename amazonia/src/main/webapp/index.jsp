@@ -19,7 +19,8 @@
 					</p>
 				</div>
 				<div class="card-footer">
-					<small class="text-body-secondary">${p.precio} €</small>
+					<small class="text-body-secondary">
+						<fmt:formatNumber type="currency" value="${p.precio}"/></small>
 				</div>
 			</div>
 		</div>

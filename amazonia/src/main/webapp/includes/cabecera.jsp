@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
 <!doctype html>
 <html lang="es" class="h-100">
 <head>
@@ -33,24 +34,23 @@
 					<li class="nav-item"><a class="nav-link active" href="carrito"><i
 							class="bi bi-cart"></i>&nbsp;CARRITO</a></li>
 
-					<c:if test="${usuario.rol == 'ADMIN' }">
-						<li class="nav-item"><a class="nav-link active"
-							href="admin/listado">Administración</a></li>
-					</c:if>
-					<c:if test="${usuario != null}">
-						<li class="navbar-text"><i class="bi bi-person-fill"></i>&nbsp;
-							${usuario.nombre}&nbsp;${usuario.rol}</li>
-					</c:if>
+					<c:choose>
+						<c:when test="${usuario != null}">
+							<c:if test="${usuario.rol == 'ADMIN' }">
+								<li class="nav-item"><a class="nav-link active"
+									href="admin/listado">Administración</a></li>
+							</c:if>
+							<li class="navbar-text"><i class="bi bi-person-fill"></i>&nbsp;
+								${usuario.nombre}&nbsp;${usuario.rol}</li>
+							<li class="nav-item"><a class="nav-link" href="logout"><i
+									class="bi bi-box-arrow-right"></i></a></li>
+						</c:when>
 
-					<c:if test="${usuario == null}">
-						<li class="nav-item"><a class="nav-link" href="login"><i
-								class="bi bi-box-arrow-in-right"></i></a></li>
-					</c:if>
-
-					<c:if test="${usuario != null}">
-						<li class="nav-item"><a class="nav-link" href="logout"><i
-								class="bi bi-box-arrow-right"></i></a></li>
-					</c:if>
+						<c:otherwise>
+							<li class="nav-item"><a class="nav-link" href="login"><i
+									class="bi bi-box-arrow-in-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 			</div>
 		</div>
