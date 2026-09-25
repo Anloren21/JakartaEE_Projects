@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.amazonia.accesodato.ProductoCrud;
+import com.amazonia.accesodato.UsuarioCrud;
 import com.amazonia.dtos.Producto;
 import com.amazonia.dtos.Usuario;
 
@@ -22,9 +23,10 @@ public class AnonimoNegocio {
 	}
 	
 	public static Usuario autenticar(Usuario login) {
+		Usuario usuario = UsuarioCrud.obtenerPorEmail(login.email());
 		
-		if ( "noa@net.com".equals(login.email()) && "noa".equals(login.password())) {
-			return new Usuario(1L, "Noa", "noa@net.com", "noa", "ADMIN");
+		if ( usuario != null && usuario.password().equals(login.password())) {
+			return usuario;
 		}else {
 			return null;
 		}

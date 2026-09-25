@@ -46,7 +46,7 @@
 
 					<c:if test="${usuario != null}">
 						<li class="nav-item"><a class="nav-link" href="logout"><i
-								class="bi bi-box-arrow-left"></i></a></li>
+								class="bi bi-box-arrow-right"></i></a></li>
 					</c:if>
 				</ul>
 			</div>
