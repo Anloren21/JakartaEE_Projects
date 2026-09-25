@@ -15,6 +15,8 @@ import com.amazonia.accesodato.ProductoCrud;
 import com.amazonia.dtos.Producto;
 import com.amazonia.logicanegocio.AdministradorNegocio;
 import com.amazonia.logicanegocio.AnonimoNegocio;
+import com.amazonia.presentacion.modelos.Carrito;
+import com.amazonia.presentacion.modelos.Linea;
 
 @WebServlet("/carrito/anadir")
 public class AnadirCarritoControladorServlet extends HttpServlet {
@@ -26,8 +28,8 @@ public class AnadirCarritoControladorServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// 1. Recibir la información de la petición
 		HttpSession session = request.getSession();
-		@SuppressWarnings("unchecked")
-		ArrayList<Producto> carrito = (ArrayList<Producto>) session.getAttribute("carrito");
+
+		Carrito carrito = (Carrito) session.getAttribute("carrito");
 		
 		String sId = request.getParameter("id");
 		
@@ -40,7 +42,7 @@ public class AnadirCarritoControladorServlet extends HttpServlet {
 		
 		log.info("Productos: " + producto);
 		
-		carrito.add(producto);
+		carrito.lineas().add(new Linea(producto, 1));
 
 		// 5. Saltar a la siguiente pantalla/vista
 		// 6. Saltar a la siguiente vista

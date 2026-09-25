@@ -2,7 +2,7 @@ package com.amazonia.presentacion.listeners;
 
 import java.util.ArrayList;
 
-import com.amazonia.dtos.Producto;
+import com.amazonia.presentacion.modelos.*;
 
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSession;
@@ -16,7 +16,7 @@ public class SesionListener implements HttpSessionListener{
 	public void sessionCreated(HttpSessionEvent se) {
 		HttpSession session = se.getSession();
 		
-		session.setAttribute("carrito", new ArrayList<Producto>());
+		session.setAttribute("carrito", new Carrito(new ArrayList<Linea>()));
 	}
 
 }
