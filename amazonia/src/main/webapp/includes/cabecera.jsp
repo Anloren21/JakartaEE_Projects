@@ -7,12 +7,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Amazonia | Tienda Online</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-	crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<base href="http://localhost:8080/amazonia/">
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/fonts/bootstrap-icons.min.css">
 </head>
 <body class="h-100 d-flex flex-column justify-content-between">
 	<nav class="navbar navbar-expand-lg bg-dark sticky-top"
@@ -30,7 +29,8 @@
 					<li class="nav-item"><a class="nav-link active" href="index">Principal</a></li>
 				</ul>
 				<ul class="navbar-nav mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active" href="admin/listado">Administación</a></li>
+					<li class="nav-item"><a class="nav-link active"
+						href="admin/listado">Administación</a></li>
 				</ul>
 			</div>
 		</div>
