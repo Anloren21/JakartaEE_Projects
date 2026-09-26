@@ -12,6 +12,7 @@
 
 	<thead class="table-secondary">
 		<tr>
+			<th></th>
 			<th>Nombre</th>
 			<th class="text-end">Precio</th>
 			<th class="text-end">Cantidad</th>
@@ -24,6 +25,7 @@
 	<tbody>
 		<c:forEach items="${carrito.lineas}" var="linea">
 			<tr class="align-middle">
+				<td><a href="carrito/borrar?id=${linea.producto.id}"><i class="text-danger bi bi-trash"></i></a></td>
 				<td>${linea.producto.nombre}</td>
 				<td class="text-end"><fmt:formatNumber type="currency"
 						value="${linea.producto.precio}" /></td>
@@ -40,22 +42,22 @@
 
 	<tfoot class="table-secondary">
 		<tr>
-			<td colspan="4"></td>
+			<td colspan="5"></td>
 			<td class="text-end">SubTotal</td>
 			<td class="text-end"><fmt:formatNumber type="currency"
-						value="${carrito.subTotal}"/></td>
+					value="${carrito.subTotal}" /></td>
 		</tr>
 		<tr>
-			<td colspan="4"></td>
+			<td colspan="5"></td>
 			<td class="text-end">IVA</td>
 			<td class="text-end"><fmt:formatNumber type="currency"
-						value="${carrito.iva}"/></td>
+					value="${carrito.iva}" /></td>
 		</tr>
 		<tr class="fw-bold">
-			<td colspan="4"></td>
+			<td colspan="5"></td>
 			<td class="text-end">Total</td>
 			<td class="text-end"><fmt:formatNumber type="currency"
-						value="${carrito.total}"/></td>
+					value="${carrito.total}" /></td>
 		</tr>
 	</tfoot>
 
