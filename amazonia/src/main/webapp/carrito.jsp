@@ -35,7 +35,7 @@
 						<form class="input-group" action="carrito/anadir">
 							<button id="menos" class="btn btn-outline-secondary"
 								type="submit" name="cantidad" value="-1" >
-								<i class="bi bi-dash"></i>
+								<i class="bi ${linea.cantidad - 1 !=0  ? 'bi-dash':'bi-trash'}"></i>
 							</button>
 						<input type="hidden" name="id" value="${linea.producto.id}">
 							<input id="cantidad" readonly type="text" pattern="\d+"
