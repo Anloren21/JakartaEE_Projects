@@ -81,6 +81,13 @@
 				<td class="text-end"><fmt:formatNumber type="currency"
 						value="${carrito.total}" /></td>
 			</tr>
+			<tr class="fw-bold">
+				<td colspan="3"></td>
+				<td class="d-none d-md-table-cell"></td>
+				<td class="d-none d-md-table-cell"></td>
+				<td class="text-end"></td>
+				<td class="text-end"><a href="factura.jsp" class="btn btn-primary">Tramitar pedido</a></td>
+			</tr>
 		</tfoot>
 
 	</table>
