@@ -24,7 +24,9 @@ public class UsuarioCrud {
 			Usuario usuario = null;
 
 			if (rs.next()) {
-				usuario = new Usuario(rs.getLong("u_id"), rs.getString("u_nombre"), rs.getString("u_email"), rs.getString("u_pass"), rs.getString("r_nombre"));
+				// TODO: Añadir los datos de cliente
+				usuario = new Usuario(rs.getLong("u_id"), rs.getString("u_nombre"), rs.getString("u_email"),
+						rs.getString("u_pass"), rs.getString("r_nombre"), null);
 			}
 			return usuario;
 		} catch (SQLException e) {

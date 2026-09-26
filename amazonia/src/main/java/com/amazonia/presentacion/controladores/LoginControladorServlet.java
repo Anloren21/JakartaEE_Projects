@@ -44,7 +44,7 @@ public class LoginControladorServlet extends HttpServlet {
 		// 2. Convertir los datos necesarios
 
 		// 3. Crear objeto
-		Usuario login = new Usuario(null, null, email, password, null);
+		Usuario login = new Usuario(null, null, email, password, null, null);
 
 		// 4. Procesar datos-Llamar a la lógica de negocio
 		Usuario usuarioAutenticado = AnonimoNegocio.autenticar(login);
