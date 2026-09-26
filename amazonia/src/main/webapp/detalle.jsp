@@ -24,11 +24,11 @@
 						a carrito</button>
 
 					<span class="input-group" style="width: auto">
-						<button class="btn btn-outline-secondary" type="button">
+						<button id="menos" class="btn btn-outline-secondary" type="button">
 							<i class="bi bi-dash"></i>
-						</button> <input name="cantidad" type="text" pattern="\d+" class="form-control text-center"
+						</button> <input id="cantidad" name="cantidad" type="text" pattern="\d+" class="form-control text-center"
 						style="max-width: 3rem" value="1">
-						<button class="btn btn-outline-secondary" type="button">
+						<button id="mas" class="btn btn-outline-secondary" type="button">
 							<i class="bi bi-plus-lg"></i>
 						</button>
 					</span>
@@ -40,7 +40,14 @@
 </div>
 
 <script type="text/javascript">
+const menos = document.querySelector('#menos');
+const mas =document.querySelector('#mas');
+const cantidad =document.querySelector('#cantidad');
 
+console.log(menos, mas, cantidad);
+
+menos.addEventListener('click', () => cantidad.value > 1 ? cantidad.value--: cantidad.value);
+mas.addEventListener('click', () =>  cantidad.value++);
 </script>
 
 <%@ include file="/includes/pie.jsp"%>
