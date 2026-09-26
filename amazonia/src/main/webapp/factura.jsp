@@ -7,17 +7,14 @@
 	<i class="bi bi-receipt"> Factura</i>
 </h2>
 
-<div class="d-flex justify-content-between">
-	<h3>Nº factura: 2026-0001</h3>
-	<h3>Fecha: 26/09/2026</h3>
-</div>
 
 
 <div class="row row-cols-md-2 mb-5">
 	<div class="col">
+		<h3 class="col">Nº factura: ${factura.numero}</h3>
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title">Emisor:</h5>
+				<h5 class="card-title">Emisor</h5>
 				<h6 class="card-subtitle mb-2 text-body-secondary">Amazonia</h6>
 				<h6 class="card-subtitle mb-2 text-body-secondary">CIF:
 					B98745632</h6>
@@ -29,15 +26,12 @@
 	</div>
 
 	<div class="col">
+		<h3 class="col">Fecha: ${factura.fecha}</h3>
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title">Factura a:</h5>
-				<h6 class="card-subtitle mb-2 text-body-secondary">Angie Rojas</h6>
-				<h6 class="card-subtitle mb-2 text-body-secondary">NIF:
-					98745632X</h6>
-				<p class="card-subtitle">C/Ubicacion n.25</p>
-				<p class="card-subtitle">C.P.: 48000</p>
-				<p class="card-subtitle">Bilbao</p>
+				<h5 class="card-title">Factura a</h5>
+				<h6 class="card-subtitle mb-2 text-body-secondary">${factura.cliente.nombre}</h6>
+				<h6 class="card-subtitle mb-2 text-body-secondary">NIF:${factura.cliente.nif}</h6>
 			</div>
 		</div>
 	</div>
@@ -61,14 +55,16 @@
 				</thead>
 
 				<tbody>
-					<tr class="align-middle">
-						<td>Portátil</td>
-						<td class="text-end">1.234,56 €</td>
-						<td class="text-center">2</td>
-						<td class="text-end d-none d-md-table-cell">2.000 €</td>
-						<td class="text-end d-none d-md-table-cell">420,00 €</td>
-						<td class="text-end fw-bold">2.420,00 €</td>
-					</tr>
+					<c:forEach items="${factura.lineas}" var="l">
+						<tr class="align-middle">
+							<td>${l.producto.nombre}</td>
+							<td class="text-end">${l.producto.precio}</td>
+							<td class="text-center">${l.cantidad}</td>
+							<td class="text-end d-none d-md-table-cell">${l.subTotal}</td>
+							<td class="text-end d-none d-md-table-cell">${l.iva}</td>
+							<td class="text-end fw-bold">${l.total}</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 
 				<tfoot>
@@ -77,21 +73,21 @@
 						<td class="d-none d-md-table-cell"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="text-end">SubTotal</td>
-						<td class="text-end">2.000,00 €</td>
+						<td class="text-end">${factura.subTotal}</td>
 					</tr>
 					<tr>
 						<td colspan="2"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="text-end">IVA</td>
-						<td class="text-end">420,00 €</td>
+						<td class="text-end">${factura.iva}</td>
 					</tr>
 					<tr class="fw-bold">
 						<td colspan="2"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="text-end">Total</td>
-						<td class="text-end">2.420,00 €</td>
+						<td class="text-end">${factura.total}</td>
 					</tr>
 				</tfoot>
 

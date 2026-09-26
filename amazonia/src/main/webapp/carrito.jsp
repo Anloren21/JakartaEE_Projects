@@ -86,7 +86,7 @@
 				<td class="d-none d-md-table-cell"></td>
 				<td class="d-none d-md-table-cell"></td>
 				<td class="text-end"></td>
-				<td class="text-end"><a href="factura.jsp" class="btn btn-primary">Tramitar pedido</a></td>
+				<td class="text-end"><a href="facturar" class="btn btn-primary">Tramitar pedido</a></td>
 			</tr>
 		</tfoot>
 
