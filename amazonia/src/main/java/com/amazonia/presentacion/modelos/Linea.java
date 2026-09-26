@@ -11,7 +11,7 @@ public record Linea(Producto producto, Integer cantidad) {
 		return total().subtract(iva());
 	}
 	public BigDecimal iva() {
-		return producto.precio().multiply(IVA);
+		return total().multiply(IVA);
 	}
 	public BigDecimal total() {
 		return producto.precio().multiply(new BigDecimal(cantidad));
