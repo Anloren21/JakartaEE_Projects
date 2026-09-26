@@ -13,18 +13,35 @@
 				<h5 class="card-title">${producto.nombre}</h5>
 				<p class="card-text">${producto.descripción}</p>
 				<p class="card-text">
-					<small class="text-body-secondary">
-						<fmt:formatNumber type="currency" value="${producto.precio}" />
+					<small class="text-body-secondary"> <fmt:formatNumber
+							type="currency" value="${producto.precio}" />
 					</small>
 				</p>
-				<p class="card-text">
-					<a href="carrito/anadir?id=${producto.id}" class="btn btn-primary">Añadir
-						al carrito</a>
-				</p>
+
+				<form class="d-flex" action="carrito/anadir">
+					<input type="hidden" name="id" value="${producto.id}">
+					<button class="me-3 btn btn-primary" type="submit">Añadir
+						a carrito</button>
+
+					<span class="input-group" style="width: auto">
+						<button class="btn btn-outline-secondary" type="button">
+							<i class="bi bi-dash"></i>
+						</button> <input name="cantidad" type="text" pattern="\d+" class="form-control text-center"
+						style="max-width: 3rem" value="1">
+						<button class="btn btn-outline-secondary" type="button">
+							<i class="bi bi-plus-lg"></i>
+						</button>
+					</span>
+				</form>
+
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+</script>
 
 <%@ include file="/includes/pie.jsp"%>
 </body>
