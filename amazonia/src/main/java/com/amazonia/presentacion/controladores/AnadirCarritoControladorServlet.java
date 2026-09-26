@@ -21,7 +21,7 @@ import com.amazonia.presentacion.modelos.Linea;
 @WebServlet("/carrito/anadir")
 public class AnadirCarritoControladorServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(AnadirCarritoControladorServlet.class.getName());
-	
+
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,41 +30,46 @@ public class AnadirCarritoControladorServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		Carrito carrito = (Carrito) session.getAttribute("carrito");
-		
+
 		String sId = request.getParameter("id");
 		String sCantidad = request.getParameter("cantidad");
-				
+
 		// 2. Convertir los datos necesarios
 		Long id = Long.parseLong(sId);
 		Integer cantidad = Integer.parseInt(sCantidad);
-		
+
 		// 3. Crear objeto
 		// 4. Procesar datos-Llamar a la lógica de negocio
 		Producto producto = AnonimoNegocio.verDetalleProducto(id);
-		
+
 		log.info("Productos: " + producto);
-		
-		
+
 		agregarACarritoProducto(carrito, producto, cantidad);
-		
+
 		// 5. Saltar a la siguiente pantalla/vista
 		// 6. Saltar a la siguiente vista
 		response.sendRedirect(request.getContextPath() + "/carrito");
 	}
 
 	private Carrito agregarACarritoProducto(Carrito carrito, Producto producto, Integer cantidad) {
-
+		boolean insertarLinea = true;
+		
 		for(Linea linea: carrito.lineas()) {
 			if(linea.producto().id() == producto.id()) {
 				cantidad += linea.cantidad();
 				
+				if(cantidad == 0) {
+					insertarLinea = false;
+				}
 				carrito.lineas().remove(linea);
 				
 				break;
 			}
 		}
-
-		carrito.lineas().add(new Linea(producto, cantidad));
+		
+		if(insertarLinea){
+			carrito.lineas().add(new Linea(producto, cantidad));
+		}
 		
 		return carrito;
 	}
