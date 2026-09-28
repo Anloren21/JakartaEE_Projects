@@ -97,5 +97,4 @@
 	</div>
 </div>
 
-</div>
 <%@ include file="/includes/pie.jsp"%>
