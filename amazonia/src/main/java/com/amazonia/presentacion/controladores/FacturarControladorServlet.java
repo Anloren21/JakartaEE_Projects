@@ -43,8 +43,6 @@ public class FacturarControladorServlet extends HttpServlet {
 		// 4. Procesar datos-Llamar a la lógica de negocio
 		Factura factura = ClienteNegocio.facturar(cliente, carrito);
 		
-		log.info(factura.toString());
-		
 		// 5. Saltar a la siguiente pantalla/vista
 		request.setAttribute("factura", factura);
 		
