@@ -32,11 +32,12 @@ public class BaseDeDatos {
 	public static PreparedStatement crearSentencia(String sql) {
 		try {
 			Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
-			PreparedStatement pst = con.prepareStatement(sql);
+			PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			return pst;
 		} catch (SQLException e) {
 			throw new RuntimeException("No se ha podido conectar a la base de datos", e);
 		}
 	}
+	
 }
