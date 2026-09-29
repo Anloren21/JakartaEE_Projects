@@ -58,11 +58,14 @@
 					<c:forEach items="${factura.lineas}" var="l">
 						<tr class="align-middle">
 							<td>${l.producto.nombre}</td>
-							<td class="text-end">${l.producto.precio}</td>
+							<td class="text-end"><fmt:formatNumber type="currency"
+									value="${l.producto.precio}" /></td>
 							<td class="text-center">${l.cantidad}</td>
-							<td class="text-end d-none d-md-table-cell">${l.subTotal}</td>
-							<td class="text-end d-none d-md-table-cell">${l.iva}</td>
-							<td class="text-end fw-bold">${l.total}</td>
+							<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
+									type="currency" value="${l.subTotal}" /></td>
+							<td class="text-end d-none d-md-table-cell">${l.iva}"/></td>
+							<td class="text-end fw-bold"><fmt:formatNumber
+									type="currency" value="${l.total}" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -73,21 +76,24 @@
 						<td class="d-none d-md-table-cell"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="text-end">SubTotal</td>
-						<td class="text-end">${factura.subTotal}</td>
+						<td class="text-end"><fmt:formatNumber type="currency"
+								value="${factura.subTotal}" /></td>
 					</tr>
 					<tr>
 						<td colspan="2"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="text-end">IVA</td>
-						<td class="text-end">${factura.iva}</td>
+						<td class="text-end"><fmt:formatNumber type="currency"
+								value="${factura.iva}" /></td>
 					</tr>
 					<tr class="fw-bold">
 						<td colspan="2"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="d-none d-md-table-cell"></td>
 						<td class="text-end">Total</td>
-						<td class="text-end">${factura.total}</td>
+						<td class="text-end"><fmt:formatNumber type="currency"
+								value="${factura.total}" /></td>
 					</tr>
 				</tfoot>
 

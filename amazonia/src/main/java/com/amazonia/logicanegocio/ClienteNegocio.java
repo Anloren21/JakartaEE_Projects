@@ -30,5 +30,9 @@ public class ClienteNegocio {
 
 		return facturaDefinitiva;
 	}
+	
+	public static Factura verFactura(Long id) {
+		return FacturaCrud.obtenerPorId(id);
+	}
 
 }

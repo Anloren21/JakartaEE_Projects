@@ -15,38 +15,24 @@ import com.amazonia.dtos.Usuario;
 import com.amazonia.logicanegocio.ClienteNegocio;
 import com.amazonia.presentacion.modelos.Carrito;
 
-@WebServlet("/facturar")
-public class FacturarControladorServlet extends HttpServlet {
+@WebServlet("/factura")
+public class FacturaControladorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1. Recibir la información de la petición
-		HttpSession session = request.getSession();
-		Carrito carrito = (Carrito) session.getAttribute("carrito");
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		Cliente cliente = usuario == null ? null: usuario.cliente();
-		
+		String sId = request.getParameter("id");
 		// 2. Convertir los datos necesarios
+		Long id = Long.parseLong(sId);
+		
 		// 3. Crear objeto
 		// 4. Procesar datos-Llamar a la lógica de negocio
-		if(usuario == null) {
-			// 5. Saltar a la siguiente pantalla/vista
-			// 6. Saltar a la siguiente vista
-			response.sendRedirect(request.getContextPath() + "/login");
-			return;
-		}
-
-		if(cliente == null) {
-			// 5. Saltar a la siguiente pantalla/vista
-			// 6. Saltar a la siguiente vista
-			response.sendRedirect(request.getContextPath() + "/cliente/formulario");
-			return;
-		}
-		
-		Factura factura = ClienteNegocio.facturar(cliente, carrito);
+		Factura factura = ClienteNegocio.verFactura(id);
 		
 		// 5. Saltar a la siguiente pantalla/vista
+		request.setAttribute("factura", factura);
+
 		// 6. Saltar a la siguiente vista
 		request.getRequestDispatcher("factura.jsp").forward(request, response);
 	}
