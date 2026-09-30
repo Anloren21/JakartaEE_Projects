@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.amazonia.accesodato.ProductoCrud;
 import com.amazonia.dtos.Producto;
@@ -25,11 +26,9 @@ public class FormularioControladorServlet extends HttpServlet {
 
 		// 2. Convertir los datos necesarios
 		if (sId != null) {
-
 			Long id = Long.parseLong(sId);
 
 			// 3. Crear objeto
-
 			// 4. Procesar datos-Llamar a la lógica de negocio
 			Producto producto = AnonimoNegocio.verDetalleProducto(id);
 
@@ -50,12 +49,23 @@ public class FormularioControladorServlet extends HttpServlet {
 		
 		// 2. Convertir los datos necesarios
 		Long id = sId.isBlank() ? null : Long.parseLong(sId);
-		BigDecimal precio = new BigDecimal(sPrecio);			
+		BigDecimal precio = sPrecio.isBlank() ? null : new BigDecimal(sPrecio);			
 
 		// 3. Crear objeto
 		Producto producto = new Producto(id, nombre, descripción, precio);
 		
 		// 4. Procesar datos-Llamar a la lógica de negocio
+		HashMap<String, String> errores = AdministradorNegocio.validarProducto(producto);
+		if(errores.size() > 0) {
+			// 5. Saltar a la siguiente pantalla/vista
+			request.setAttribute("errores", errores);
+			request.setAttribute("producto", producto);
+			
+			// 6. Saltar a la siguiente vista
+			request.getRequestDispatcher("formulario.jsp").forward(request, response);
+			return;
+		}
+		
 		if(id == null) {
 			AdministradorNegocio.altaProducto(producto);
 		}else {
