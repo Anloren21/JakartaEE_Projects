@@ -35,4 +35,8 @@ public class ClienteNegocio {
 		return FacturaCrud.obtenerPorId(id);
 	}
 
+	public static ArrayList<Factura> listarFacturas(Long id) {
+		return FacturaCrud.obtenerPorIdCliente(id);
+	}
+
 }

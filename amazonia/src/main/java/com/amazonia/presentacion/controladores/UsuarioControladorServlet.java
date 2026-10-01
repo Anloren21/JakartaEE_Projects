@@ -24,29 +24,20 @@ public class UsuarioControladorServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1. Recibir la información de la petición
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+
 		// 2. Convertir los datos necesarios
 		// 3. Crear objeto
 		// 4. Procesar datos-Llamar a la lógica de negocio
-		// 5. Saltar a la siguiente pantalla/vista
+		if (usuario.cliente() != null) {
+			ArrayList<Factura> facturas = ClienteNegocio.listarFacturas(usuario.cliente().id());
+
+			// 5. Saltar a la siguiente pantalla/vista
+			request.setAttribute("facturas", facturas);
+		}
+
 		// 6. Saltar a la siguiente vista
 		request.getRequestDispatcher("/usuario.jsp").forward(request, response);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// 1. Recibir la información de la petición
-		HttpSession session = request.getSession();
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		
-		String nombre = request.getParameter("nombre");
-		String apellidos = request.getParameter("apellidos");
-		String nif = request.getParameter("nif");
-		
-		// 2. Convertir los datos necesarios
-		// 3. Crear objeto
-		// 4. Procesar datos-Llamar a la lógica de negocio
-		// 5. Saltar a la siguiente pantalla/vista
-		// 6. Saltar a la siguiente vista
-	}
-
 }

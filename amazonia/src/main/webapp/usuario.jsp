@@ -30,4 +30,44 @@
 	</div>
 </div>
 
+<div class="card">
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-borderless">
+				<caption>Facturas</caption>
+
+				<thead>
+					<tr>
+						<th>Número</th>
+						<th>Fecha</th>
+						<th class="text-end d-none d-md-table-cell">Subtotal</th>
+						<th class="text-end d-none d-md-table-cell">IVA</th>
+						<th class="text-end">Total</th>
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<c:forEach items="${facturas}" var="f">
+						<tr class="align-middle">
+							<td>${f.numero}</td>
+							<td>${f.fecha}</td>
+							<td class="text-end d-none d-md-table-cell"><fmt:formatNumber
+									type="currency" value="${f.subTotal}" /></td>
+							<td class="text-end d-none d-md-table-cell"> <fmt:formatNumber
+									type="currency" value="${f.iva}"/></td>
+							<td class="text-end fw-bold"><fmt:formatNumber
+									type="currency" value="${f.total}" /></td>
+							<td><a class="btn btn-primary" href="factura?id=${f.id}">Ver
+									factura</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+
+			</table>
+
+		</div>
+	</div>
+</div>
+
 <%@ include file="/includes/pie.jsp"%>
