@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.amazonia.dtos.Cliente;
 import com.amazonia.dtos.Factura;
 import com.amazonia.dtos.Usuario;
 import com.amazonia.logicanegocio.ClienteNegocio;
 import com.amazonia.presentacion.modelos.Carrito;
+import com.amazonia.presentacion.modelos.Linea;
 
 @WebServlet("/facturar")
 public class FacturarControladorServlet extends HttpServlet {
@@ -23,6 +25,7 @@ public class FacturarControladorServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// 1. Recibir la información de la petición
 		HttpSession session = request.getSession();
+		
 		Carrito carrito = (Carrito) session.getAttribute("carrito");
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		Cliente cliente = usuario == null ? null: usuario.cliente();
@@ -47,8 +50,10 @@ public class FacturarControladorServlet extends HttpServlet {
 		Factura factura = ClienteNegocio.facturar(cliente, carrito);
 		
 		// 5. Saltar a la siguiente pantalla/vista
+		session.setAttribute("carrito", new Carrito(new ArrayList<Linea>()));
+		
 		// 6. Saltar a la siguiente vista
-		request.getRequestDispatcher("factura.jsp").forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/factura?id=" + factura.id());
 	}
 
 }
