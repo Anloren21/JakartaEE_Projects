@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ include file="/includes/cabecera.jsp"%>
@@ -8,8 +8,7 @@
 	<c:forEach var="p" items="${productos}">
 		<div class="col">
 			<div class="card h-100">
-				<img src="https://picsum.photos/id/${p.id}/400/300"
-					class="card-img-top" alt="...">
+				<img src="fotos/${p.id}.jpg" class="card-img-top" alt="...">
 				<div class="card-body">
 					<h5 class="card-title">${p.nombre}</h5>
 					<p class="card-text">${p.descripción}</p>

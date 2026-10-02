@@ -4,7 +4,7 @@
 <%@ include file="/includes/cabecera.jsp"%>
 
 
-<form action="admin/formulario" method="post">
+<form action="admin/formulario" method="post"  enctype="multipart/form-data">
 	<div class="row mb-3">
 		<label for="id" class="col-sm-2 col-form-label">Id</label>
 		<div class="col-sm">
@@ -15,8 +15,9 @@
 	<div class="row mb-3">
 		<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
 		<div class="col-sm">
-			<input type="text" class="form-control ${errores.nombre != null ? 'is-invalid' : ''}" id="nombre" name="nombre"
-				value="${producto.nombre }">
+			<input type="text"
+				class="form-control ${errores.nombre != null ? 'is-invalid' : ''}"
+				id="nombre" name="nombre" value="${producto.nombre }">
 			<div class="invalid-feedback">${errores.nombre}</div>
 		</div>
 	</div>
@@ -24,12 +25,23 @@
 	<div class="row mb-3">
 		<label for="precio" class="col-sm-2 col-form-label">Precio</label>
 		<div class="col-sm">
-			<input type="number" step=".02" class="form-control ${errores.precio != null ? 'is-invalid' : ''}" id="precio"
-				name="precio" value="${producto.precio }">
+			<input type="number" step=".02"
+				class="form-control ${errores.precio != null ? 'is-invalid' : ''}"
+				id="precio" name="precio" value="${producto.precio }">
 			<div class="invalid-feedback">${errores.precio}</div>
 		</div>
 	</div>
 
+	<c:if test="${producto.id != null}">
+		<div class="row mb-3">
+			<label for="imagen" class="col-sm-2 col-form-label">Imagen</label>
+			<div class="col-sm">
+				<input type="file" class="form-control" id="imagen" name="imagen"
+					accept="imagen/jpeg">
+			</div>
+		</div>
+	</c:if>
+	
 	<div class="row mb-3">
 		<label for="descripción" class="col-sm-2 col-form-label">Descripción</label>
 		<div class="col-sm">
