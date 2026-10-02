@@ -17,6 +17,7 @@ import com.amazonia.dtos.Producto;
 import com.amazonia.dtos.Usuario;
 import com.amazonia.logicanegocio.AdministradorNegocio;
 import com.amazonia.logicanegocio.AnonimoNegocio;
+import com.amazonia.presentacion.modelos.Alerta;
 
 @WebServlet("/login")
 public class LoginControladorServlet extends HttpServlet {
@@ -63,8 +64,10 @@ public class LoginControladorServlet extends HttpServlet {
 			log.warning("Login incorrecto");
 
 			// 5. Saltar a la siguiente pantalla/vista
+			request.setAttribute("alerta", new Alerta("danger", "Usuario o contraseña incorrectos"));
+			
 			// 6. Saltar a la siguiente vista
-			response.sendRedirect("login");
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 
 	}

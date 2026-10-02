@@ -18,6 +18,7 @@ import java.util.HashMap;
 import com.amazonia.dtos.Producto;
 import com.amazonia.logicanegocio.AdministradorNegocio;
 import com.amazonia.logicanegocio.AnonimoNegocio;
+import com.amazonia.presentacion.modelos.Alerta;
 
 @WebServlet("/admin/formulario")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -79,6 +80,7 @@ public class FormularioControladorServlet extends HttpServlet {
 			// 5. Saltar a la siguiente pantalla/vista
 			request.setAttribute("errores", errores);
 			request.setAttribute("producto", producto);
+			request.setAttribute("alerta", new Alerta("danger", "Carrige los fallos de validación"));
 
 			// 6. Saltar a la siguiente vista
 			request.getRequestDispatcher("formulario.jsp").forward(request, response);
