@@ -10,31 +10,40 @@ import com.amazonia.dtos.Usuario;
 
 public class AnonimoNegocio {
 	private static final Logger log = Logger.getLogger(AnonimoNegocio.class.getName());
-	
+
 	public static ArrayList<Producto> listarProductos() {
 		log.info("Listado productos");
 		return ProductoCrud.obtenerTodos();
 	}
+
+	public static ArrayList<Producto> listarProductos(int pagina) {
+		log.info("Listado productos" + pagina);
+		return ProductoCrud.obtenerPagina(pagina);
+	}
+
+	public static int numeroPaginasProductos() {
+		return ProductoCrud.obtenerNumeroPaginas();
+	}
 	
 	public static Producto verDetalleProducto(Long id) {
 		log.info("Ver detalle producto " + id);
-		
+
 		return ProductoCrud.obtenerPorId(id);
 	}
-	
+
 	public static Usuario autenticar(Usuario login) {
 		Usuario usuario = UsuarioCrud.obtenerPorEmail(login.email());
-		
-		if ( usuario != null && usuario.password().equals(login.password())) {
+
+		if (usuario != null && usuario.password().equals(login.password())) {
 			return usuario;
-		}else {
+		} else {
 			return null;
 		}
 	}
 
 	public static ArrayList<Producto> buscarProductos(String texto) {
 		log.info("Busqueda por " + texto);
-		
+
 		return ProductoCrud.obtenerPorTexto(texto);
 	}
 }
