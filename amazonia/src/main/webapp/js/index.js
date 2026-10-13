@@ -1,5 +1,8 @@
 const URL = 'api/v1/productos';
 
+let pagina = 1;
+let texto = '';
+
 function euro(cantidad){
     const fmt = new Intl.NumberFormat('es-ES', {
         style: 'currency',
@@ -12,8 +15,14 @@ function euro(cantidad){
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-    const respuesta = await fetch(URL);
+	const alerta = document.querySelector('#alerta');
+
+	alerta.style.display = 'none';
+		
+    const respuesta = await fetch(`${URL}?pagina=${pagina}&texto=${texto}`);
+	const respuestoNumeroPaginas = await fetch(`${URL}/numero-paginas?texto=${texto}`);
     const productos = await respuesta.json();
+	const numeroPaginas = await respuestoNumeroPaginas.json();
 
     const fila = document.querySelector('#listado  .row');
 
@@ -42,4 +51,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 
         fila.append(div);
     }
+	
+	document.querySelector('#p-numero a').textContent = `${pagina} de ${numeroPaginas}`;
+
+	if(pagina === 1) {
+		document.querySelector('#p-inicio a').classList.add('disabled');
+		document.querySelector('#p-anterior a').classList.add('disabled');
+	}
 });

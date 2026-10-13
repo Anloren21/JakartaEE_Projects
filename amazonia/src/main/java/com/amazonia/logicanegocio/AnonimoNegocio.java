@@ -16,20 +16,33 @@ public class AnonimoNegocio {
 		return ProductoCrud.obtenerTodos();
 	}
 
-	public static ArrayList<Producto> listarProductos(int pagina) {
+	public static ArrayList<Producto> listarProductos(Integer pagina) {
 		log.info("Listado productos" + pagina);
 		return ProductoCrud.obtenerPagina(pagina);
 	}
 
-	public static ArrayList<Producto> listarProductos(int pagina, String texto) {
-		log.info("Listado productos" + pagina);
-		return ProductoCrud.obtenerPagina(pagina, texto);
+	public static ArrayList<Producto> listarProductos(Integer pagina, String texto) {
+		log.info("Listando productos página " + pagina + "bucando texto " + texto);
+
+		if (texto != null && pagina != null) {
+			return ProductoCrud.obtenerPagina(pagina, texto);
+		}
+
+		if (pagina != null && texto == null) {
+			return ProductoCrud.obtenerPagina(pagina);
+		}
+
+		if (pagina == null && texto != null) {
+			return ProductoCrud.obtenerPagina(1, texto);
+		}
+
+		return ProductoCrud.obtenerPagina(1);
 	}
 
 	public static int numeroPaginasProductos() {
 		return ProductoCrud.obtenerNumeroPaginas();
 	}
-	
+
 	public static int numeroPaginasProductos(String texto) {
 		return ProductoCrud.obtenerNumeroPaginas(texto);
 	}
