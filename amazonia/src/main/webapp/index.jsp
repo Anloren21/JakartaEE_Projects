@@ -30,24 +30,29 @@
 <nav class="mt-3" aria-label="Page navigation">
 	<ul class="pagination justify-content-center">
 		<!-- Ir al Inicio-->
-		<li class="page-item  ${param.pagina == 1 ? 'disabled' : '' }"><a class="page-link" href="index?pagina=1"
-			aria-label="Previous"> <i class="bi bi-chevron-bar-left"></i>
+		<li class="page-item  ${pagina == 1 ? 'disabled' : '' }"><a
+			class="page-link" href="index?pagina=1&texto=${texto}" aria-label="Previous"> <i
+				class="bi bi-chevron-bar-left"></i>
 		</a></li>
-		
+
 		<!-- Anterior -->
-		<li class="page-item ${param.pagina == 1 ? 'disabled' : '' }"><a class="page-link" href="index?pagina=${param.pagina - 1}"
+		<li class="page-item ${pagina == 1 ? 'disabled' : '' }"><a
+			class="page-link" href="index?pagina=${pagina - 1}&texto=${texto}"
 			aria-label="Anterior"> <i class="bi bi-chevron-left"></i>
 		</a></li>
-		
-		<li class="page-item active"><a class="page-link" href="#">${param.pagina} de ${numeroPaginas}</a></li>
-		
+
+		<li class="page-item active"><a class="page-link" href="#">${pagina}
+				de ${numeroPaginas}</a></li>
+
 		<!-- Siguiente -->
-		<li class="page-item ${param.pagina == numeroPaginas ? 'disabled' : '' }"><a class="page-link" href="index?pagina=${param.pagina + 1}"
-			aria-label="Next">  <i class="bi bi-chevron-right"></i>
+		<li class="page-item ${pagina == numeroPaginas ? 'disabled' : '' }"><a
+			class="page-link" href="index?pagina=${pagina + 1}&texto=${texto}"
+			aria-label="Next"> <i class="bi bi-chevron-right"></i>
 		</a></li>
 
 		<!-- Ir al final-->
-		<li class="page-item ${param.pagina == numeroPaginas ? 'disabled' : '' }"><a class="page-link" href="index?paginas=${numeroPaginas}"
+		<li class="page-item ${pagina == numeroPaginas ? 'disabled' : '' }"><a
+			class="page-link" href="index?pagina=${numeroPaginas}&texto=${texto}"
 			aria-label="Último"> <i class="bi bi-chevron-bar-right"></i>
 		</a></li>
 	</ul>

@@ -21,13 +21,21 @@ public class AnonimoNegocio {
 		return ProductoCrud.obtenerPagina(pagina);
 	}
 
+	public static ArrayList<Producto> listarProductos(int pagina, String texto) {
+		log.info("Listado productos" + pagina);
+		return ProductoCrud.obtenerPagina(pagina, texto);
+	}
+
 	public static int numeroPaginasProductos() {
 		return ProductoCrud.obtenerNumeroPaginas();
 	}
 	
+	public static int numeroPaginasProductos(String texto) {
+		return ProductoCrud.obtenerNumeroPaginas(texto);
+	}
+
 	public static Producto verDetalleProducto(Long id) {
 		log.info("Ver detalle producto " + id);
-
 		return ProductoCrud.obtenerPorId(id);
 	}
 
@@ -46,4 +54,5 @@ public class AnonimoNegocio {
 
 		return ProductoCrud.obtenerPorTexto(texto);
 	}
+
 }
