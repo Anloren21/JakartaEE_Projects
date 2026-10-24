@@ -21,11 +21,13 @@ function euro(cantidad) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-	mostrar('listado');
-	
-	document.querySelectorAll('.navbar-brand, .navbar-nav:first-of-type .nav-link:first-of-type')
-		.forEach(enlacesListado => enlacesListado.addEventListener('click', listado));	
-	
+    mostrar('listado');
+
+    document.querySelectorAll('.navbar-brand, .navbar-nav:first-of-type .nav-link:first-of-type')
+        .forEach(enlacesListado => enlacesListado.addEventListener('click', listado));
+
+    document.querySelector('#buscar-texto').addEventListener('submit', buscar);
+
     alerta = document.querySelector('#alerta');
 
     pNumero = document.querySelector('#p-numero a');
@@ -91,8 +93,8 @@ async function actualizarListadoProductos() {
 				</div>
 			</div>
 		`;
-		
-		div.querySelector(".btn").addEventListener('click', () => detalle(p.id));
+
+        div.querySelector(".btn").addEventListener('click', () => detalle(p.id));
 
 
         fila.append(div);
@@ -108,38 +110,48 @@ async function actualizarListadoProductos() {
     if (pagina === 1) {
         pInicio.classList.add('disabled');
         pAnterior.classList.add('disabled');
-    } else if(pagina === numeroPaginas) {
+    } else if (pagina === numeroPaginas) {
         pSiguiente.classList.add('disabled');
         pFin.classList.add('disabled');
     }
 }
 
 async function detalle(id) {
-	console.log(id);
-	
-	const respuesta = await fetch(`${URL}/${id}`);
-	const producto = await respuesta.json();
-	
-	document.querySelector('#detalle img').src=`fotos/${producto.id}.jpg`;
-	document.querySelector('#detalle .card-title').textContent=`${producto.nombre}`;
-	document.querySelector('#detalle .card-text:first-of-type').textContent=`${producto.descripción ?? ''}`;
-	document.querySelector('#detalle small').textContent=`${euro(producto.precio)}`;
-	document.querySelector('#detalle input[type=hidden]').value=`${producto.id}`;
-	
-	mostrar('detalle');
+    console.log(id);
+
+    const respuesta = await fetch(`${URL}/${id}`);
+    const producto = await respuesta.json();
+
+    document.querySelector('#detalle img').src = `fotos/${producto.id}.jpg`;
+    document.querySelector('#detalle .card-title').textContent = `${producto.nombre}`;
+    document.querySelector('#detalle .card-text:first-of-type').textContent = `${producto.descripción ?? ''}`;
+    document.querySelector('#detalle small').textContent = `${euro(producto.precio)}`;
+    document.querySelector('#detalle input[type=hidden]').value = `${producto.id}`;
+
+    mostrar('detalle');
 }
 
-function principal (e){
-	e.preventDefault();
-	mostrar('listado');
+function listado(e) {
+    e && e.preventDefault();
+	actualizarListadoProductos();
+    mostrar('listado');
 }
 
-function mostrar(id){
-	const secciones = document.querySelectorAll('main>section');
+function buscar(e) {
+    e && e.preventDefault();
 
-	for(const seccion of secciones){
-		seccion.style.display = 'none';
-	}
+	pagina = 1;
+    texto = document.querySelector('[name=texto]').value;
 	
-	document.getElementById(id).style.display = null;
+    listado();
+}
+
+function mostrar(id) {
+    const secciones = document.querySelectorAll('main>section');
+
+    for (const seccion of secciones) {
+        seccion.style.display = 'none';
+    }
+
+    document.getElementById(id).style.display = null;
 }
