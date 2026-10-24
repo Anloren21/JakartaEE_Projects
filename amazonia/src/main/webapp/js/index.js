@@ -7,9 +7,7 @@ let texto = '';
 
 let alerta;
 let pNumero, pInicio, pAnterior, pSiguiente, pFin;
-
 let fila;
-
 
 function euro(cantidad) {
     const fmt = new Intl.NumberFormat('es-ES', {
@@ -23,6 +21,11 @@ function euro(cantidad) {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+	mostrar('listado');
+	
+	document.querySelectorAll('.navbar-brand, .navbar-nav:first-of-type .nav-link:first-of-type')
+		.forEach(enlacesListado => enlacesListado.addEventListener('click', listado));	
+	
     alerta = document.querySelector('#alerta');
 
     pNumero = document.querySelector('#p-numero a');
@@ -53,7 +56,7 @@ async function paginacion(e) {
     switch (id) {
         case 'p-inicio': pagina = 1; break;
         case 'p-anterior': pagina > 1 && pagina--; break;
-        case 'p-siguiente': pagina > numeroPaginas && pagina++; break;
+        case 'p-siguiente': pagina < numeroPaginas && pagina++; break;
         case 'p-fin': pagina = numeroPaginas; break;
     }
     console.log(pagina);
@@ -68,29 +71,28 @@ async function actualizarListadoProductos() {
 
     numeroPaginas = await respuestaNumeroPaginas.json();
 
-    fila.innerHTML();
+    fila.innerHTML = '';
 
     for (const p of productos) {
         const div = document.createElement('div');
         div.className = 'col';
         div.innerHTML = `
-			<div class="col">
-				<div class="card h-100">
-					<img src="fotos/${p.id}.jpg" class="card-img-top" alt="...">
-					<div class="card-body">
-						<h5 class="card-title">${p.nombre}</h5>
-						<p class="card-text">${p.descripción ?? ''}</p>
-						<p class="card-text">
-							<a class="btn btn-primary" href="detalle?id=${p.id}">Ver
-								producto</a>
-						</p>
-					</div>
-					<div class="card-footer">
-						<small class="text-body-secondary"> ${euro(p.precio)} </small>
-					</div>
+			<div class="card h-100">
+				<img src="fotos/${p.id}.jpg" class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">${p.nombre}</h5>
+					<p class="card-text">${p.descripción ?? ''}</p>
+					<p class="card-text">
+						<button class="btn btn-primary">Ver producto</button>
+					</p>
+				</div>
+				<div class="card-footer">
+					<small class="text-body-secondary"> ${euro(p.precio)} </small>
 				</div>
 			</div>
 		`;
+		
+		div.querySelector(".btn").addEventListener('click', () => detalle(p.id));
 
 
         fila.append(div);
@@ -106,8 +108,38 @@ async function actualizarListadoProductos() {
     if (pagina === 1) {
         pInicio.classList.add('disabled');
         pAnterior.classList.add('disabled');
-    } else if (pagina === numeroPaginas) {
+    } else if(pagina === numeroPaginas) {
         pSiguiente.classList.add('disabled');
         pFin.classList.add('disabled');
     }
+}
+
+async function detalle(id) {
+	console.log(id);
+	
+	const respuesta = await fetch(`${URL}/${id}`);
+	const producto = await respuesta.json();
+	
+	document.querySelector('#detalle img').src=`fotos/${producto.id}.jpg`;
+	document.querySelector('#detalle .card-title').textContent=`${producto.nombre}`;
+	document.querySelector('#detalle .card-text:first-of-type').textContent=`${producto.descripción ?? ''}`;
+	document.querySelector('#detalle small').textContent=`${euro(producto.precio)}`;
+	document.querySelector('#detalle input[type=hidden]').value=`${producto.id}`;
+	
+	mostrar('detalle');
+}
+
+function principal (e){
+	e.preventDefault();
+	mostrar('listado');
+}
+
+function mostrar(id){
+	const secciones = document.querySelectorAll('main>section');
+
+	for(const seccion of secciones){
+		seccion.style.display = 'none';
+	}
+	
+	document.getElementById(id).style.display = null;
 }
