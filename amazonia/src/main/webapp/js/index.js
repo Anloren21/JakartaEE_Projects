@@ -23,11 +23,29 @@ function euro(cantidad) {
 window.addEventListener('DOMContentLoaded', async () => {
     mostrar('listado');
 
+    variablesGlobales();
+
+    eventosGlobales();
+
+    alerta.style.display = 'none';
+	
+	listado()
+});
+
+function eventosGlobales() {
+    masMenosCantidad();
     document.querySelectorAll('.navbar-brand, .navbar-nav:first-of-type .nav-link:first-of-type')
         .forEach(enlacesListado => enlacesListado.addEventListener('click', listado));
 
     document.querySelector('#buscar-texto').addEventListener('submit', buscar);
 
+
+    for (const enlacePaginacion of document.querySelectorAll('.pagination a')) {
+        enlacePaginacion.addEventListener('click', paginacion);
+    }
+}
+
+function variablesGlobales() {
     alerta = document.querySelector('#alerta');
 
     pNumero = document.querySelector('#p-numero a');
@@ -36,16 +54,19 @@ window.addEventListener('DOMContentLoaded', async () => {
     pSiguiente = document.querySelector('#p-siguiente a');
     pFin = document.querySelector('#p-fin a');
 
-    for (const enlacePaginacion of document.querySelectorAll('.pagination a')) {
-        enlacePaginacion.addEventListener('click', paginacion);
-    }
+	fila = document.querySelector('#listado .row');
+}
 
-    fila = document.querySelector('#listado .row');
+function masMenosCantidad() {
+    const menos = document.querySelector('#menos');
+    const mas = document.querySelector('#mas');
+    const cantidad = document.querySelector('#cantidad');
 
-    alerta.style.display = 'none';
+    console.log(menos, mas, cantidad);
 
-    await actualizarListadoProductos();
-});
+    menos.addEventListener('click', () => cantidad.value > 1 ? cantidad.value-- : cantidad.value);
+    mas.addEventListener('click', () => cantidad.value++);
+}
 
 async function paginacion(e) {
     console.log(e);
@@ -133,16 +154,16 @@ async function detalle(id) {
 
 function listado(e) {
     e && e.preventDefault();
-	actualizarListadoProductos();
+    actualizarListadoProductos();
     mostrar('listado');
 }
 
 function buscar(e) {
     e && e.preventDefault();
 
-	pagina = 1;
+    pagina = 1;
     texto = document.querySelector('[name=texto]').value;
-	
+
     listado();
 }
 
