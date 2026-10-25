@@ -50,6 +50,7 @@ function eventosGlobales() {
     document.querySelector('#anadir-carrito').addEventListener('submit', anadirCarrito);
     
 	document.querySelector('#ver-carrito').addEventListener('click', carrito);
+	document.querySelector('#vaciar-carrito').addEventListener('click', vaciar-carrito);
 }
 
 function variablesGlobales() {
@@ -295,4 +296,10 @@ function anadirProductoACarrito(producto, cantidad) {
     }
 	
     guardarCarrito(carrito);
+}
+
+function vaciarCarrito() {
+	localStorage.removeItem('carrito');
+	
+	listado();
 }
