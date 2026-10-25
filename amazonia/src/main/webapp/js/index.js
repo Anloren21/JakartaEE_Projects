@@ -8,6 +8,9 @@ let texto = '';
 let alerta;
 let pNumero, pInicio, pAnterior, pSiguiente, pFin;
 let fila;
+let carritoTbody, carritoSubtotal, carritoIva, carritoTotal;
+
+
 
 function euro(cantidad) {
     const fmt = new Intl.NumberFormat('es-ES', {
@@ -28,8 +31,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     eventosGlobales();
 
     alerta.style.display = 'none';
-	
-	listado()
+
+    listado()
 });
 
 function eventosGlobales() {
@@ -43,8 +46,10 @@ function eventosGlobales() {
     for (const enlacePaginacion of document.querySelectorAll('.pagination a')) {
         enlacePaginacion.addEventListener('click', paginacion);
     }
-	
-	document.querySelector('#anadir-carrito').addEventListener('submit', anadirCarrito);
+
+    document.querySelector('#anadir-carrito').addEventListener('submit', anadirCarrito);
+    
+	document.querySelector('#ver-carrito').addEventListener('click', carrito);
 }
 
 function variablesGlobales() {
@@ -56,7 +61,12 @@ function variablesGlobales() {
     pSiguiente = document.querySelector('#p-siguiente a');
     pFin = document.querySelector('#p-fin a');
 
-	fila = document.querySelector('#listado .row');
+    fila = document.querySelector('#listado .row');
+
+    carritoTbody = document.querySelector('#carrito tbody');
+    carritoSubtotal = document.querySelector('#carrito tfoot tr:first-of-type td:last-of-type');
+    carritoIva = document.querySelector('#carrito tfoot tr:nth-of-type(2) td:last-of-type');
+    carritoTotal = document.querySelector('#carrito tfoot tr:nth-of-type(3) td:last-of-type');
 }
 
 function masMenosCantidad() {
@@ -134,8 +144,8 @@ async function actualizarListadoProductos() {
         pInicio.classList.add('disabled');
         pAnterior.classList.add('disabled');
     }
-	
-	if (pagina === numeroPaginas) {
+
+    if (pagina === numeroPaginas) {
         pSiguiente.classList.add('disabled');
         pFin.classList.add('disabled');
     }
@@ -152,7 +162,9 @@ async function detalle(id) {
     document.querySelector('#detalle .card-text:first-of-type').textContent = `${producto.descripción ?? ''}`;
     document.querySelector('#detalle small').textContent = `${euro(producto.precio)}`;
     document.querySelector('#detalle input[type=hidden]').value = `${producto.id}`;
-
+	
+	document.querySelector('#cantidad').value = 1;
+	
     mostrar('detalle');
 }
 
@@ -160,6 +172,64 @@ function listado(e) {
     e && e.preventDefault();
     actualizarListadoProductos();
     mostrar('listado');
+}
+
+function carrito() {
+    const lineas = obtenerCarrito();
+    let subtotal = 0;
+    let iva = 0;
+    let total = 0;
+
+    carritoTbody.innerHTML = '';
+
+    for (const linea of lineas) {
+        const lineaSubtotal = (linea.producto.precio * linea.cantidad) * (1.0 - 0.21);
+        const lineaIva = linea.producto.precio * linea.cantidad * 0.21;
+        const lineaTotal = linea.producto.precio * linea.cantidad;
+
+        subtotal += lineaSubtotal;
+        iva += lineaIva;
+        total += lineaTotal;
+
+        const tr = document.createElement('tr');
+        tr.className = 'align-middle';
+
+        tr.innerHTML = `
+			<td><a href="carrito/borrar?id=${linea.producto.id}"><i
+					class="text-danger bi bi-trash"></i></a></td>
+			<td>${linea.producto.nombre}</td>
+			<td class="text-end">${euro(linea.producto.precio)}</td>
+			<td class="text-end">
+				<form class="input-group" action="carrito/anadir">
+					<button id="menos" class="btn btn-outline-secondary"
+						type="submit" name="cantidad" value="-1">
+						<i
+							class="bi ${linea.cantidad - 1 != 0 ? 'bi-dash' : 'bi-trash'}"></i>
+					</button>
+					<input type="hidden" name="id" value="${linea.producto.id}">
+					<input id="cantidad" readonly type="text" pattern="\d+"
+						class="form-control text-center" style="max-width: 3rem"
+						value="${linea.cantidad}">
+					<button id="mas" class="btn btn-outline-secondary"
+						type="submit" name="cantidad" value="1">
+						<i class="bi bi-plus-lg"></i>
+					</button>
+				</form>
+			</td>
+			<td class="text-end d-none d-md-table-cell">${euro(lineaSubtotal)}</td>
+			<td class="text-end d-none d-md-table-cell">${euro(lineaIva)}</td>
+			<td class="text-end fw-bold">${euro(lineaTotal)}</td>	
+		`;
+
+        carritoTbody.appendChild(tr);
+    }
+
+    carritoSubtotal.textContent = euro(subtotal);
+    carritoIva.textContent = euro(iva);
+    carritoTotal.textContent = euro(total);
+
+
+    mostrar('carrito');
 }
 
 function buscar(e) {
@@ -171,18 +241,18 @@ function buscar(e) {
     listado();
 }
 
-async function anadirCarrito(e){
-	e && e.preventDefault();
-	
-	const id = Number(document.querySelector('[name=id]').value);
-	const cantidad = Number(document.getElementById('cantidad').value);
-	
-	const respuesta = await fetch(`${URL}/${id}`);
-	const producto = await respuesta.json();
-	
-	anadirProductoACarrito(producto, cantidad);
-	
-	mostrar('carrito');
+async function anadirCarrito(e) {
+    e && e.preventDefault();
+
+    const id = Number(document.querySelector('[name=id]').value);
+    const cantidad = Number(document.getElementById('cantidad').value);
+
+    const respuesta = await fetch(`${URL}/${id}`);
+    const producto = await respuesta.json();
+
+    anadirProductoACarrito(producto, cantidad);
+
+    carrito();
 }
 
 function mostrar(id) {
@@ -195,24 +265,34 @@ function mostrar(id) {
     document.getElementById(id).style.display = null;
 }
 
-function obtenerCarrito(){
-	const carrito = localStorage.getItem('carrito');
-	
-	if(!carrito){
-		return guardarCarrito([]);
-	}
-	
-	return JSON.parse(carrito);
+function obtenerCarrito() {
+    const carrito = localStorage.getItem('carrito');
+
+    if (!carrito) {
+        return guardarCarrito([]);
+    }
+
+    return JSON.parse(carrito);
 }
 
-function guardarCarrito(carrito){
-	localStorage.setItem('carrito', JSON.stringify(carrito));
-	
-	return carrito;
+function guardarCarrito(carrito) {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    return carrito;
 }
 
-function anadirProductoACarrito(producto, cantidad){
-	const carrito = [...obtenerCarrito(), {producto, cantidad: Number(cantidad)}];
+function anadirProductoACarrito(producto, cantidad) {
+    let carrito;
+    const carritoOriginal = obtenerCarrito();
+
+    const lineaExistente = carritoOriginal.find(linea => linea.producto.id === producto.id);
+
+    if (lineaExistente) {
+        lineaExistente.cantidad += cantidad;
+        carrito = carritoOriginal;
+    } else {
+        carrito = [...carritoOriginal, { producto, cantidad: Number(cantidad) }];
+    }
 	
-	guardarCarrito(carrito);
+    guardarCarrito(carrito);
 }
