@@ -20,8 +20,6 @@ function euro(cantidad) {
     return fmt.format(cantidad);
 }
 
-crearCarrito();
-
 window.addEventListener('DOMContentLoaded', async () => {
     mostrar('listado');
 
@@ -176,8 +174,8 @@ function buscar(e) {
 async function anadirCarrito(e){
 	e && e.preventDefault();
 	
-	const id = document.querySelector('[name=id]').value;
-	const cantidad = document.getElementById('cantidad').value;
+	const id = Number(document.querySelector('[name=id]').value);
+	const cantidad = Number(document.getElementById('cantidad').value);
 	
 	const respuesta = await fetch(`${URL}/${id}`);
 	const producto = await respuesta.json();
@@ -197,14 +195,14 @@ function mostrar(id) {
     document.getElementById(id).style.display = null;
 }
 
-function crearCarrito() {
-	localStorage.setItem('carrito', JSON.stringify([]));
-	
-	return [];
-}
-
 function obtenerCarrito(){
-	return JSON.parse(localStorage.getItem('carrito'));
+	const carrito = localStorage.getItem('carrito');
+	
+	if(!carrito){
+		return guardarCarrito([]);
+	}
+	
+	return JSON.parse(carrito);
 }
 
 function guardarCarrito(carrito){
@@ -214,7 +212,7 @@ function guardarCarrito(carrito){
 }
 
 function anadirProductoACarrito(producto, cantidad){
-	const carrito = [...obtenerCarrito(), {producto, cantidad}];
+	const carrito = [...obtenerCarrito(), {producto, cantidad: Number(cantidad)}];
 	
 	guardarCarrito(carrito);
 }
