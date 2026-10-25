@@ -50,7 +50,7 @@ function eventosGlobales() {
     document.querySelector('#anadir-carrito').addEventListener('submit', anadirCarrito);
     
 	document.querySelector('#ver-carrito').addEventListener('click', carrito);
-	document.querySelector('#vaciar-carrito').addEventListener('click', vaciar-carrito);
+	document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
 }
 
 function variablesGlobales() {
@@ -85,7 +85,7 @@ async function paginacion(e) {
     console.log(e);
     e.preventDefault();
 
-    const id = e.target.parentElement.parentElement.id;
+    const id = e.currentTarget.parendElement.id;
 
     console.log(id);
 
