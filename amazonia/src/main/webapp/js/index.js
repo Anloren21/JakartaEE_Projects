@@ -175,7 +175,7 @@ function listado(e) {
     mostrar('listado');
 }
 
-function carrito() {
+window.carrito = function() {
     const lineas = obtenerCarrito();
     let subtotal = 0;
     let iva = 0;
@@ -196,14 +196,14 @@ function carrito() {
         tr.className = 'align-middle';
 
         tr.innerHTML = `
-			<td><a href="carrito/borrar?id=${linea.producto.id}"><i
-					class="text-danger bi bi-trash"></i></a></td>
+			<td><button class="btn" onclick="eliminarProductoDelCarrito(${linea.producto.id}); carrito()"><i
+					class="text-danger bi bi-trash"></i></button></td>
 			<td>${linea.producto.nombre}</td>
 			<td class="text-end">${euro(linea.producto.precio)}</td>
 			<td class="text-end">
 				<div class="input-group" data-id="${linea.producto.id}">
 					<button onclick="gestionarCantidadCarrito(this)" class="btn btn-outline-secondary menos" value="-1">
-						<i class="bi ${linea.cantidad === 1 ? 'bi-trash' : 'bi-dash'}"></i>
+						<i class="bi ${linea.cantidad - 1 != 0 ? 'bi-trash' : 'bi-dash'}"></i>
 					</button>
 					<input id="cantidad" readonly type="text" pattern="\d+"
 						class="form-control text-center" style="max-width: 3rem"
@@ -278,7 +278,7 @@ function guardarCarrito(carrito) {
     return carrito;
 }
 
-function anadirProductoACarrito(producto, cantidad) {
+window.anadirProductoACarrito = function(producto, cantidad) {
     let carrito;
     const carritoOriginal = obtenerCarrito();
 
@@ -297,6 +297,8 @@ function anadirProductoACarrito(producto, cantidad) {
     }
 
     guardarCarrito(carrito);
+
+
 }
 
 function vaciarCarrito() {
@@ -315,4 +317,11 @@ window.gestionarCantidadCarrito = function(that) {
     anadirProductoACarrito({ id }, esMenos ? -1 : + 1);
 
     carrito();
+}
+
+window.eliminarProductoDelCarrito = function(id){
+	const carritoOriginal = obtenerCarrito();
+	const carrito = carritoOriginal.filter(linea => linea.producto.id !== id);
+	
+	guardarCarrito(carrito);
 }
