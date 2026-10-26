@@ -48,9 +48,9 @@ function eventosGlobales() {
     }
 
     document.querySelector('#anadir-carrito').addEventListener('submit', anadirCarrito);
-    
-	document.querySelector('#ver-carrito').addEventListener('click', carrito);
-	document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
+
+    document.querySelector('#ver-carrito').addEventListener('click', carrito);
+    document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
 }
 
 function variablesGlobales() {
@@ -163,9 +163,9 @@ async function detalle(id) {
     document.querySelector('#detalle .card-text:first-of-type').textContent = `${producto.descripción ?? ''}`;
     document.querySelector('#detalle small').textContent = `${euro(producto.precio)}`;
     document.querySelector('#detalle input[type=hidden]').value = `${producto.id}`;
-	
-	document.querySelector('#cantidad').value = 1;
-	
+
+    document.querySelector('#cantidad').value = 1;
+
     mostrar('detalle');
 }
 
@@ -201,21 +201,17 @@ function carrito() {
 			<td>${linea.producto.nombre}</td>
 			<td class="text-end">${euro(linea.producto.precio)}</td>
 			<td class="text-end">
-				<form class="input-group" action="carrito/anadir">
-					<button id="menos" class="btn btn-outline-secondary"
-						type="submit" name="cantidad" value="-1">
-						<i
-							class="bi ${linea.cantidad - 1 != 0 ? 'bi-dash' : 'bi-trash'}"></i>
+				<div class="input-group" data-id="${linea.producto.id}">
+					<button onclick="gestionarCantidadCarrito(this)" class="btn btn-outline-secondary menos" value="-1">
+						<i class="bi ${linea.cantidad - 1 != 0 ? 'bi-dash' : 'bi-trash'}"></i>
 					</button>
-					<input type="hidden" name="id" value="${linea.producto.id}">
 					<input id="cantidad" readonly type="text" pattern="\d+"
 						class="form-control text-center" style="max-width: 3rem"
 						value="${linea.cantidad}">
-					<button id="mas" class="btn btn-outline-secondary"
-						type="submit" name="cantidad" value="1">
+					<button onclick="gestionarCantidadCarrito(this)" class="btn btn-outline-secondary mas" value="1">
 						<i class="bi bi-plus-lg"></i>
 					</button>
-				</form>
+				</div>
 			</td>
 			<td class="text-end d-none d-md-table-cell">${euro(lineaSubtotal)}</td>
 			<td class="text-end d-none d-md-table-cell">${euro(lineaIva)}</td>
@@ -294,12 +290,21 @@ function anadirProductoACarrito(producto, cantidad) {
     } else {
         carrito = [...carritoOriginal, { producto, cantidad: Number(cantidad) }];
     }
-	
+
     guardarCarrito(carrito);
 }
 
 function vaciarCarrito() {
-	localStorage.removeItem('carrito');
+    localStorage.removeItem('carrito');
+
+    listado();
+}
+
+window.gestionarCantidadCarrito = function(that) {
+    const id = that.parentElement.dataset.id;
+    const cantidad = that.parentElement.children[1].value;
+    const esMenos = that.classList.contains('menos');
+    const esMas = that.classList.contains('mas');
 	
-	listado();
+	console.log(id, cantidad, esMenos, esMas);
 }
