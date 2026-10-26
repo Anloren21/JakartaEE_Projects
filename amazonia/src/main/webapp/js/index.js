@@ -286,7 +286,12 @@ function anadirProductoACarrito(producto, cantidad) {
 
     if (lineaExistente) {
         lineaExistente.cantidad += cantidad;
-        carrito = carritoOriginal;
+
+        if (lineaExistente <= 0) {
+            carrito = carritoOriginal.filter(linea => linea.producto.id !== producto.id);
+        } else {
+            carrito = carritoOriginal;
+        }
     } else {
         carrito = [...carritoOriginal, { producto, cantidad: Number(cantidad) }];
     }
@@ -300,41 +305,14 @@ function vaciarCarrito() {
     listado();
 }
 
-window.eliminarProductoCarrito = function(id) {
+window.gestionarCantidadCarrito = function(that) {
+    const id = Number(that.parentElement.dataset.id);
+    const esMenos = that.classList.contains('menos');
+    const esMas = that.classList.contains('mas');
 
-    const lineas = obtenerCarrito();
+    console.log(id, cantidad, esMenos, esMas);
 
-    const carritoActualizado = lineas.filter(
-        linea => Number(linea.producto.id) !== Number(id)
-    );
-
-    guardarCarrito(carritoActualizado);
+    anadirProductoACarrito({ id }, esMenos ? -1 : + 1);
 
     carrito();
 }
-
-window.gestionarCantidadCarrito = function(that) {
-
-    const id = Number(that.parentElement.dataset.id);
-    const esMenos = that.classList.contains('menos');
-
-    const lineas = obtenerCarrito();
-
-    const linea = lineas.find(
-        linea => Number(linea.producto.id) === id
-    );
-
-    if (!linea) return;
-
-    if (esMenos && linea.cantidad <= 1) {
-        eliminarProductoCarrito(id);
-        return;
-    }
-
-    anadirProductoACarrito(
-        linea.producto,
-        esMenos ? -1 : 1
-    );
-
-    carrito();
-};
