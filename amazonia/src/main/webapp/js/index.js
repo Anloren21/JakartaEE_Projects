@@ -203,7 +203,7 @@ function carrito() {
 			<td class="text-end">
 				<div class="input-group" data-id="${linea.producto.id}">
 					<button onclick="gestionarCantidadCarrito(this)" class="btn btn-outline-secondary menos" value="-1">
-						<i class="bi ${linea.cantidad - 1 != 0 ? 'bi-dash' : 'bi-trash'}"></i>
+						<i class="bi ${linea.cantidad === 1 ? 'bi-trash' : 'bi-dash'}"></i>
 					</button>
 					<input id="cantidad" readonly type="text" pattern="\d+"
 						class="form-control text-center" style="max-width: 3rem"
@@ -300,11 +300,41 @@ function vaciarCarrito() {
     listado();
 }
 
-window.gestionarCantidadCarrito = function(that) {
-    const id = that.parentElement.dataset.id;
-    const cantidad = that.parentElement.children[1].value;
-    const esMenos = that.classList.contains('menos');
-    const esMas = that.classList.contains('mas');
-	
-	console.log(id, cantidad, esMenos, esMas);
+window.eliminarProductoCarrito = function(id) {
+
+    const lineas = obtenerCarrito();
+
+    const carritoActualizado = lineas.filter(
+        linea => Number(linea.producto.id) !== Number(id)
+    );
+
+    guardarCarrito(carritoActualizado);
+
+    carrito();
 }
+
+window.gestionarCantidadCarrito = function(that) {
+
+    const id = Number(that.parentElement.dataset.id);
+    const esMenos = that.classList.contains('menos');
+
+    const lineas = obtenerCarrito();
+
+    const linea = lineas.find(
+        linea => Number(linea.producto.id) === id
+    );
+
+    if (!linea) return;
+
+    if (esMenos && linea.cantidad <= 1) {
+        eliminarProductoCarrito(id);
+        return;
+    }
+
+    anadirProductoACarrito(
+        linea.producto,
+        esMenos ? -1 : 1
+    );
+
+    carrito();
+};
