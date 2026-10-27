@@ -44,7 +44,6 @@ function eventosGlobales() {
 
     document.querySelector('#buscar-texto').addEventListener('submit', buscar);
 
-
     for (const enlacePaginacion of document.querySelectorAll('.pagination a')) {
         enlacePaginacion.addEventListener('click', paginacion);
     }
@@ -54,6 +53,13 @@ function eventosGlobales() {
     document.querySelector('#ver-carrito').addEventListener('click', carrito);
     document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
     document.querySelector('#tramitar-pedido').addEventListener('click', tramitarPedido);
+
+	//Abrir la seccion de login al hacer click en el enlace de la navbar
+	document.querySelector('#login-link').addEventListener('click', (e) => {
+		e.preventDefault();
+		mostrar('login');
+	});
+	
 }
 
 function variablesGlobales() {
@@ -346,7 +352,7 @@ async function tramitarPedido() {
     const respuesta = await fetch(`${URL_FACTURAS}?idCliente=${idClienteFactura}`, {
         method: 'POST',
         body: JSON.stringify(carritoFactura),
-        header: {
+        headers: {
             'Content-Type': 'application/json',
         }
     });
@@ -394,4 +400,9 @@ async function tramitarPedido() {
     facturaTotal.textContent = euro(total);
 
     mostrar('factura');
+}
+
+function login(e) {
+    e && e.preventDefault();
+    mostrar('login');
 }
