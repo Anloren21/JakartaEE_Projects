@@ -11,10 +11,10 @@ import bibliotecas.accesodatos.BaseDeDatos;
 
 public class UsuarioCrud {
 	private static final String SQL_SELECT_EMAIL = """
-										SELECT
-				u.id AS u_id,
+			SELECT
+			    u.id AS u_id,
 			    u.email AS u_email,
-			    u.password AS u_pass,
+			    u.password AS u_password,
 			    u.nombre AS u_nombre,
 			    r.nombre AS r_nombre,
 			    c.id AS c_id,
@@ -22,12 +22,15 @@ public class UsuarioCrud {
 			    c.apellidos AS c_apellidos,
 			    c.nif AS c_nif
 			FROM
-				usuarios u
-					JOIN
-				roles r ON r.id = u.roles_id
-					JOIN
+			    usuarios u
+			        JOIN
+			    roles r ON r.id = u.roles_id
+					LEFT JOIN
 				clientes c ON c.id = u.clientes_id
-			WHERE email = ?""";
+			WHERE
+			    email = ?
+			""";
+	private static final String SQL_UPDATE_CLIENTE = "UPDATE usuarios SET clientes_id=? WHERE id=?";
 
 	public static Usuario obtenerPorEmail(String email) {
 		try (PreparedStatement pst = BaseDeDatos.crearSentencia(SQL_SELECT_EMAIL)) {
@@ -37,14 +40,29 @@ public class UsuarioCrud {
 			Usuario usuario = null;
 
 			if (rs.next()) {
-				Cliente cliente = new Cliente(rs.getLong("c_id"), rs.getString("c_nombre"), rs.getString("c_apellidos"),
-						rs.getString("c_nif"));
+				Long idCliente = rs.getLong("c_id");
+
+				Cliente cliente = idCliente == 0 ? null
+						: new Cliente(rs.getLong("c_id"), rs.getString("c_nombre"), rs.getString("c_apellidos"),
+								rs.getString("c_nif"));
 				usuario = new Usuario(rs.getLong("u_id"), rs.getString("u_nombre"), rs.getString("u_email"),
-						rs.getString("u_pass"), rs.getString("r_nombre"), cliente);
+						rs.getString("u_password"), rs.getString("r_nombre"), cliente);
 			}
+
 			return usuario;
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al obtener el usuario " + email, e);
+		}
+	}
+
+	public static void modificarCliente(Long idUsuario, Long idCliente) {
+		try (PreparedStatement pst = BaseDeDatos.crearSentencia(SQL_UPDATE_CLIENTE)) {
+			pst.setLong(1, idCliente);
+			pst.setLong(2, idUsuario);
+			
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException("Error al modificar el cliente del usuario " + idUsuario, e);
 		}
 	}
 }
