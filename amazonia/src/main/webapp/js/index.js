@@ -1,5 +1,6 @@
 const URL_PRODUCTOS = 'api/v1/productos';
 const URL_FACTURAS = 'api/v1/facturas';
+const URL_LOGIN = 'api/v1/login';
 
 let numeroPaginas;
 
@@ -54,12 +55,51 @@ function eventosGlobales() {
     document.querySelector('#vaciar-carrito').addEventListener('click', vaciarCarrito);
     document.querySelector('#tramitar-pedido').addEventListener('click', tramitarPedido);
 
-	//Abrir la seccion de login al hacer click en el enlace de la navbar
-	document.querySelector('#login-link').addEventListener('click', (e) => {
-		e.preventDefault();
-		mostrar('login');
-	});
-	
+    //Abrir la seccion de login al hacer click en el enlace de la navbar
+    document.querySelector('#login-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        mostrar('login');
+    });
+
+    //Manejo del formulario de login por AJAX
+    document.querySelector('#formulario-login').addEventListener('submit', loginAjax);
+
+}
+
+async function loginAjax(e) {
+    e.preventDefault();
+
+    const email = document.querySelector('#login-email').value;
+    const password = document.querySelector('#login-password').value;
+
+    if (!email || !password) {
+        alert('Por favor completa todos los campos');
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(URL_LOGIN, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (respuesta.ok) {
+            // Login exitoso - limpiar formulario y mostrar listado
+            document.querySelector('#formulario-login').reset();
+            listado();
+        } else {
+            // Error de autenticación
+            const error = await respuesta.text();
+            console.error('Error en login:', error);
+            alert('Email o contraseña incorrectos');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error en la conexión');
+    }
 }
 
 function variablesGlobales() {
@@ -400,9 +440,4 @@ async function tramitarPedido() {
     facturaTotal.textContent = euro(total);
 
     mostrar('factura');
-}
-
-function login(e) {
-    e && e.preventDefault();
-    mostrar('login');
 }
