@@ -61,7 +61,7 @@ public class FormularioControladorServlet extends HttpServlet {
 		String sId = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String sPrecio = request.getParameter("precio");
-		String descripción = request.getParameter("descripción");
+		String descripción = request.getParameter("descripcion");
 
 		//Obtiene el fichero usando el atributo "name" del input de HTML
 		Part filePart = request.getPart("imagen");
@@ -72,7 +72,7 @@ public class FormularioControladorServlet extends HttpServlet {
 
 
 		// 3. Crear objeto
-		Producto producto = new Producto(id, nombre, descripción, precio);
+		Producto producto = new Producto(id, nombre, descripcion, precio);
 
 		// 4. Procesar datos-Llamar a la lógica de negocio
 		HashMap<String, String> errores = AdministradorNegocio.validarProducto(producto);

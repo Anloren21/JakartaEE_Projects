@@ -147,15 +147,15 @@ function variablesGlobales() {
     carritoIva = document.querySelector('#carrito tfoot tr:nth-of-type(2) td:last-of-type');
     carritoTotal = document.querySelector('#carrito tfoot tr:nth-of-type(3) td:last-of-type');
 
-    facturaLineas = document.querySelector('#factura-lineas');
-    facturaSubtotal = document.querySelector('#factura-subtotal');
-    facturaIva = document.querySelector('#factura-iva');
-    facturaTotal = document.querySelector('#factura-total');
-
     facturaNumero = document.querySelector('#factura-numero');
     facturaFecha = document.querySelector('#factura-fecha');
     facturaClienteNombre = document.querySelector('#factura-cliente-nombre');
     facturaClienteNif = document.querySelector('#factura-cliente-nif');
+
+	facturaLineas = document.querySelector('#factura-lineas');
+    facturaSubtotal = document.querySelector('#factura-subtotal');
+    facturaIva = document.querySelector('#factura-iva');
+    facturaTotal = document.querySelector('#factura-total');
 
     // Admin (AJAX)
     adminListadoTbody = document.querySelector('#admin-listado tbody');
@@ -180,7 +180,7 @@ async function paginacion(e) {
     console.log(e);
     e.preventDefault();
 
-    const id = e.currentTarget.parendElement.id;
+    const id = e.currentTarget.parentElement.id;
 
     console.log(id);
 
